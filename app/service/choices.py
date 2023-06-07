@@ -76,3 +76,13 @@ GENDER_CHOICES = (
     (2, 'female'),
     (3, 'other')
 )
+
+
+'''type_property = (
+        'office',
+        'house',
+    )
+type_operations = (
+        'sell',
+        'rent'
+    )'''

@@ -11,7 +11,13 @@ from ..service import service
 
 bm = dict(blank=True, max_length=300)
 
+class Image(models.Model):
+    name = models.CharField(max_length=90)
+    file = models.ImageField(upload_to=service.upload_image_path)
+    main = models.BooleanField(default=False)
 
+    def __str__(self) -> str:
+        return f'{self.name}'
 
 class Property(models.Model):
     # realtor = models.ForeignKey(Realtor, on_delete=models.CASCADE)
@@ -36,6 +42,10 @@ class Property(models.Model):
     featrued = models.BooleanField(default=False)
     active = models.BooleanField(default=True)
     timestamp = models.DateTimeField(auto_now_add=True)
+
+  
+
+
 
     def __str__(self):
         return self.slug
