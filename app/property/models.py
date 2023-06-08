@@ -2,6 +2,8 @@ from django.db import models
 
 from django.utils.translation import gettext_lazy as _
 
+from ..oauth.models import UserModel
+
 import random 
 import os
 from django.urls import reverse
@@ -11,7 +13,15 @@ from ..service import service
 
 bm = dict(blank=True, max_length=300)
 
+class Image(models.Model):
+    name = models.CharField(max_length=90)
+    file = models.ImageField(upload_to=service.upload_image_path, blank=True, null=True)
+    main = models.BooleanField(default=False)
 
+    # main = models.BooleanField(default=False)
+
+    def __str__(self) -> str:
+        return f'{self.name}'
 
 class Property(models.Model):
     # realtor = models.ForeignKey(Realtor, on_delete=models.CASCADE)
@@ -32,7 +42,9 @@ class Property(models.Model):
 
     square_meter = models.DecimalField(blank=True, decimal_places=2, max_digits=20, default=0.00)
     price = models.DecimalField(decimal_places=0, max_digits=20, default=0.00)
-    main_image = models.ImageField(upload_to=service.upload_image_path, null=True, blank=True)
+    # images = models.ImageField(upload_to=service.upload_image_path, null=True, blank=True)
+    images = models.ManyToManyField(Image, related_name='property_images')
+    # main_image = models.OneToOneField(Image, related_name='property')
     featrued = models.BooleanField(default=False)
     active = models.BooleanField(default=True)
     timestamp = models.DateTimeField(auto_now_add=True)
@@ -47,7 +59,7 @@ class Property(models.Model):
 
 
 class PropertyRating(models.Model):
-    # user = models.ForeignKey(User)
+    user = models.ForeignKey(UserModel)
     property = models.ForeignKey(Property, on_delete=models.CASCADE)
     rating = models.IntegerField(null=True, blank=True)
     verfied = models.BooleanField(default=False)
