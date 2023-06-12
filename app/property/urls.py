@@ -1,9 +1,9 @@
 from rest_framework.routers import DefaultRouter
-from .views import PropertyReadView
+from .views import PropertyViewSet
 
 routers = DefaultRouter()
 
-routers.register('', PropertyReadView, basename='allproperty')
+routers.register('', PropertyViewSet, basename='allproperty')
 
 
 urlpatterns = [

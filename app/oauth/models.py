@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, AbstractUser
 from .managers import UserManager
-from izde_kg.app.service import choices
+from ..service import choices
 
 
 
