@@ -76,3 +76,25 @@ GENDER_CHOICES = (
     (2, 'female'),
     (3, 'other')
 )
+
+REGION_CHOICES = (
+    ('CHUI', 'CHUI'),
+    ('DJALAL-ABAD', 'DJALAL-ABAD'),
+    ('OSH', 'OSH'),
+    ('NARYN', 'NARYN'),
+    ('TALAS', 'TALAS'),
+    ('ISSYK-KUL', 'ISSYK-KUL'),
+)
+
+DEAL= (
+    ('rent', 'Rent'),
+    ('sale', 'Sale'),
+    ('term', 'Term'),
+)
+
+CURRENCY = (
+        ('ru', 'RU'),
+        ('us', 'US'),
+        ('som', 'SOM'),
+        ('ero', 'ERO'),
+)

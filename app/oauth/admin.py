@@ -1,3 +1,10 @@
 from django.contrib import admin
+from . import models
 
-# Register your models here.
+@admin.register(models.UserModel)
+class UserModelAdmin(admin.ModelAdmin):
+    list_display = ['first_name']
+    list_filter = ['email']
+
+    # class Meta:
+    #     model = models.UserModel
