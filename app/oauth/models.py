@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, AbstractUser
 from .managers import UserManager
-from ..service import choices
+from izde_kg.app.service import choices
 
 
 
@@ -23,6 +23,12 @@ class UserModel(AbstractUser):
     REQUIRED_FIELDS = ['gender']
 
     objects = UserManager()
+    
+    def has_module_perms(self, app_label):
+        return True
+    
+    def has_perm(self, perm, obj=None):
+        return True
 
     def __str__(self):
         return self.email

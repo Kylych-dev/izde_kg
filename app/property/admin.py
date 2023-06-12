@@ -1,5 +1,6 @@
 from django.contrib import admin
 from . import models
+from .models import Property
 
 '''
 Image
@@ -28,3 +29,4 @@ class AdvertisementAdmin(admin.ModelAdmin):
 
     class Meta:
         models = models.Advertisement
+
