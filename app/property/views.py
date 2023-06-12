@@ -69,6 +69,7 @@ class PropertyViewSet(viewsets.ModelViewSet):
 
         region = request.query_params.get('region')
         if region:
+            
             queryset = queryset.filter(address__region=region)
 
         city = request.query_params.get('city')
