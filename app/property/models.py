@@ -31,7 +31,7 @@ class Property(models.Model):
     purpose = models.CharField(_('porpose'), **bm, choices=choices.PURPOSE, unique=True)
     duration = models.CharField(_('duration'), **bm, choices=choices.DURATION, unique=False)
     square_meter = models.DecimalField(blank=True, decimal_places=2, max_digits=20, default=0.00)
-    images = models.ManyToManyField(Image, related_name='property_images')
+    # images = models.ManyToManyField(Image, related_name='prop_images')
     featrued = models.BooleanField(default=False)
     address = models.ForeignKey('Address', verbose_name=_("Address"), on_delete=models.CASCADE, blank=True)
 
@@ -66,11 +66,11 @@ class Advertisement(models.Model):
     user = models.ForeignKey(UserModel, on_delete=models.CASCADE)
     created_date = models.DateField()
     additional_info = models.TextField()
-    feedback = models.ManyToManyField()
+    feedback = models.ManyToManyField('FeedBack')
 
 class Address(models.Model):
     region = models.CharField(_('region'), **bm, choices=choices.REGION_CHOICES, unique=False)
-    address = models.ForeignKey('Address', on_delete=models.CASCADE)
+
     city = models.ForeignKey('City', verbose_name=_("City"), on_delete=models.CASCADE, blank=True)
     district = models.ForeignKey('District', verbose_name=_("District"), on_delete=models.CASCADE, blank=True)
 

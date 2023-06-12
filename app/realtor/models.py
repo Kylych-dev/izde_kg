@@ -15,25 +15,41 @@ class Agent(models.Model):
                                         verbose_name='realtor photo')
     description     = models.TextField(blank=True, verbose_name='description')
     phone           = models.CharField(max_length=20, verbose_name='phone number')
-    # social_networks = models.ManyToManyField('SocialNetwork')
     hire_date       = models.DateTimeField(default=datetime.now,blank=True)
     created_at      = models.DateTimeField(editable=False, verbose_name='created at')
     updated_at      = models.DateTimeField(editable=False, verbose_name='updated at')
 
+    # social_networks = models.ManyToManyField('SocialNetwork')
+
+
+    class Meta:
+        verbose_name_plural = 'Agents'
+        ordering = ['-created_at']
+        
 
     def __str__(self):
         return self.first_name
     
+    
 class Language(models.Model):
     language        = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.language
+
 
 class Nation(models.Model):
     nation          = models.CharField(max_length=50)
 
-class Feedback(models.Model):
-    user            = models.ForeignKey(model.UserModel, on_delete=models.CASCADE)
-    property        = models.ForeignKey(model.Property, on_delete=models.CASCADE)
+    def __str__(self) -> str:
+        return self.nation
 
+class Feedback(models.Model):
+    user            = models.ForeignKey(model.UserModel, on_delete=models.CASCADE, related_name='realtor_feedback')
+    property        = models.ForeignKey(model.Property, on_delete=models.CASCADE, related_name='property_feedback')
+
+    def __str__(self) -> str:
+        return f'Feedback for {self.property} by {self.user}'
 
 
 

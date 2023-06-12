@@ -62,6 +62,7 @@ MIDDLEWARE = [
 
 
 AUTH_USER_MODEL = 'oauth.UserModel'
+AUTH_USER_MODEL_MANAGER = 'oauth.UserManager'
 
 ROOT_URLCONF = 'config.urls'
 
