@@ -1,9 +1,10 @@
 from django.contrib import admin
 from . import models
 
-@admin.register(models.UserModel)
+
+@admin.register(models.CustomUser)
 class UserModelAdmin(admin.ModelAdmin):
-    list_display = ['first_name']
+    list_display = ['full_name']
     list_filter = ['email']
 
     # class Meta:
