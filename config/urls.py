@@ -21,7 +21,8 @@ from .yasg import urlpatterns as doc_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('property/', include('app.property.urls'))
+    path('property/', include('app.property.urls')),
+    path('oauth/', include('app.oauth.urls'))
 ]
 
 urlpatterns += doc_urls

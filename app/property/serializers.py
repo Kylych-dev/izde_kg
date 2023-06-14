@@ -11,3 +11,4 @@ class PropertySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+
