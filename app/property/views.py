@@ -1,16 +1,12 @@
-from django.shortcuts import render
-from requests import request
-
 from .serializers import PropertySerializer
 from .permissions import IsPropertyOwner
 from .models import Property
 
-from rest_framework import viewsets
-from rest_framework.response import Response
-from rest_framework import viewsets
+from rest_framework import viewsets, filters
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from rest_framework.pagination import PageNumberPagination
+
+from django.shortcuts import render
 
 
 class PropertyViewSet(viewsets.ModelViewSet):
@@ -21,90 +17,75 @@ class PropertyViewSet(viewsets.ModelViewSet):
     """
     queryset = Property.objects.all()
     serializer_class = PropertySerializer
-    
-    
-class CustomPagination(PageNumberPagination):
-    page_size = 10 
-    page_size_query_param = 'page_size' 
-    max_page_size = 100  
+    permission_classes = [IsAuthenticated]
+    filter_backends = [filters.OrderingFilter, filters.SearchFilter]
+    search_fields = ['storey', 'bedroom', 'bathroom', 
+                     'furnished', 'parking_space', 
+                     'new_property', 'purpose', 'duration', 
+                     'square_meter', 'address__region', 
+                     'address__city__title', 'address__district__title']
 
-class PropertyView(viewsets.ModelViewSet):
-    """
-    Класс для добавления, редактирования и удаления объявления, работает только для владельца
-    """
-    pagination_class = CustomPagination
-    serializer_class = PropertySerializer
-    permission_classes = [IsAuthenticated, IsAdminUser]
-    
-    def get(self, request):
-        queryset = Property.objects.all()  #filter(owner = request.user)
-        paginated_data = self.pagination_class().paginate_queryset(queryset, request)
+    # @action(detail=False, methods=['get'])
+    # def search(self, request, **kwargs):
+    #     """
+    #     Функция поиска, через endpoints
+    #     """
+    #     queryset = self.filter_queryset(self.get_queryset())
 
-        return self.pagination_class().get_paginated_response(paginated_data)
+    #     # Применение фильтров
+    #     storey = request.query_params.get('storey')
+    #     if storey:
+    #         queryset = queryset.filter(storey=storey)
 
+    #     bedroom = request.query_params.get('bedroom')
+    #     if bedroom:
+    #         queryset = queryset.filter(bedroom=bedroom)
 
-    @action(detail=False, methods=['get'])
-    def search(self, request, **kwargs):
-        """
-        Функция поиска, через endpoints
-        """
-        queryset = self.filter_queryset(self.get_queryset())
+    #     bathroom = request.query_params.get('bathroom')
+    #     if bathroom:
+    #         queryset = queryset.filter(bathroom=bathroom)
 
-        # Применение фильтров
-        storey = request.query_params.get('storey')
-        if storey:
-            queryset = queryset.filter(storey=storey)
+    #     furnished = request.query_params.get('furnished')
+    #     if furnished:
+    #         queryset = queryset.filter(furnished=furnished)
 
-        bedroom = request.query_params.get('bedroom')
-        if bedroom:
-            queryset = queryset.filter(bedroom=bedroom)
+    #     parking_space = request.query_params.get('parking_space')
+    #     if parking_space:
+    #         queryset = queryset.filter(parking_space=parking_space)
 
-        bathroom = request.query_params.get('bathroom')
-        if bathroom:
-            queryset = queryset.filter(bathroom=bathroom)
+    #     new_property = request.query_params.get('new_property')
+    #     if new_property:
+    #         queryset = queryset.filter(new_property=new_property)
 
-        furnished = request.query_params.get('furnished')
-        if furnished:
-            queryset = queryset.filter(furnished=furnished)
+    #     purpose = request.query_params.get('purpose')
+    #     if purpose:
+    #         queryset = queryset.filter(purpose=purpose)
 
-        parking_space = request.query_params.get('parking_space')
-        if parking_space:
-            queryset = queryset.filter(parking_space=parking_space)
+    #     duration = request.query_params.get('duration')
+    #     if duration:
+    #         queryset = queryset.filter(duration=duration)
 
-        new_property = request.query_params.get('new_property')
-        if new_property:
-            queryset = queryset.filter(new_property=new_property)
+    #     square_meter_min = request.query_params.get('square_meter_min')
+    #     square_meter_max = request.query_params.get('square_meter_max')
+    #     if square_meter_min and square_meter_max:
+    #         queryset = queryset.filter(square_meter__range=(square_meter_min, square_meter_max))
 
-        purpose = request.query_params.get('purpose')
-        if purpose:
-            queryset = queryset.filter(purpose=purpose)
-
-        duration = request.query_params.get('duration')
-        if duration:
-            queryset = queryset.filter(duration=duration)
-
-        square_meter_min = request.query_params.get('square_meter_min')
-        square_meter_max = request.query_params.get('square_meter_max')
-        if square_meter_min and square_meter_max:
-            queryset = queryset.filter(square_meter__range=(square_meter_min, square_meter_max))
-
-        region = request.query_params.get('region')
-        if region:
+    #     region = request.query_params.get('region')
+    #     if region:
             
-            queryset = queryset.filter(address__region=region)
+    #         queryset = queryset.filter(address__region=region)
 
-        city = request.query_params.get('city')
-        if city:
-            queryset = queryset.filter(address__city__title=city)
+    #     city = request.query_params.get('city')
+    #     if city:
+    #         queryset = queryset.filter(address__city__title=city)
 
-        district = request.query_params.get('district')
-        if district:
-            queryset = queryset.filter(address__district__title=district)
+    #     district = request.query_params.get('district')
+    #     if district:
+    #         queryset = queryset.filter(address__district__title=district)
 
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
+    #     serializer = self.get_serializer(queryset, many=True)
+    #     return Response(serializer.data)
 
-      
     def get_permissions(self):
         if self.action in ['create', 'update', 'partial_update', 'destroy']:
             permission_classes = [IsPropertyOwner]

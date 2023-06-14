@@ -22,6 +22,7 @@ class Image(models.Model):
 
 
 class Property(models.Model):
+    owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     storey = models.CharField(
         _('storey'), **bm, choices=choices.STOREY, unique=False)
     bedroom = models.CharField(
@@ -80,14 +81,15 @@ class Advertisement(models.Model):
 class Address(models.Model):
     region = models.CharField(
         _('region'), **bm, choices=choices.REGION_CHOICES, unique=False)
-
     city = models.ForeignKey('City', verbose_name=_(
         "City"), on_delete=models.CASCADE, blank=True)
     district = models.ForeignKey('District', verbose_name=_(
         "District"), on_delete=models.CASCADE, blank=True)
-
     street = models.CharField(max_length=50, verbose_name='street')
     apartment = models.PositiveSmallIntegerField()
+
+    def __str__(self):
+        return str(self.street) + str(self.apartment)
 
 
 class City(models.Model):
@@ -107,12 +109,12 @@ class District(models.Model):
 class FeedBack(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     property = models.ForeignKey(
-        Property, on_delete=models.CASCADE, related_name='property_id')
+        Property, on_delete=models.CASCADE, related_name='feedback')
     comment = models.TextField()
-    date = models.DateTimeField()
+    date = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self) -> str:
-        return self.property, self.property, self.date
+    def __str__(self):
+        return f"{self.property} - {self.user} - {self.date.strftime('%Y-%m-%d %H:%M:%S')}"
 
 
 '''
