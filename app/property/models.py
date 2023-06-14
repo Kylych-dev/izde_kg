@@ -1,11 +1,10 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from ..oauth.models import UserModel
+from ..oauth.models import CustomUser
 import random
 import os
 from django.urls import reverse
 from ..service import choices, service
-
 
 bm = dict(blank=True, max_length=300)
 
@@ -15,6 +14,7 @@ class Image(models.Model):
         'Property', related_name='images', on_delete=models.CASCADE)
     file = models.ImageField(
         upload_to=service.upload_image_path, blank=True, null=True)
+
     # main = models.BooleanField(default=False)
 
     def __str__(self) -> str:
@@ -60,7 +60,6 @@ class Property(models.Model):
     def __str__(self):
         return self.slug
 
-
     class Meta:
         verbose_name = 'Property'
         verbose_name_plural = 'Property'
@@ -72,7 +71,7 @@ class Advertisement(models.Model):
     currency_choices = models.CharField(
         _('currency'), max_length=10, choices=choices.CURRENCY)
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    user = models.ForeignKey(UserModel, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     created_date = models.DateField()
     additional_info = models.TextField()
     feedback = models.ManyToManyField('FeedBack')
@@ -106,7 +105,7 @@ class District(models.Model):
 
 
 class FeedBack(models.Model):
-    user = models.ForeignKey(UserModel, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     property = models.ForeignKey(
         Property, on_delete=models.CASCADE, related_name='property_id')
     comment = models.TextField()

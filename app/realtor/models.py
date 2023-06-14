@@ -8,7 +8,7 @@ from ..oauth import models as model
 from ..property import models as model
 
 class Agent(models.Model):
-    user            = models.ForeignKey(model.UserModel, on_delete=models.CASCADE)
+    user            = models.ForeignKey(model.CustomUser, on_delete=models.CASCADE)
     first_name      = models.CharField(max_length=200, verbose_name='first name')
     last_name       = models.CharField(max_length=200, verbose_name='last name')
     photo           = models.ImageField(upload_to=service.upload_avatar_path,
@@ -45,7 +45,7 @@ class Nation(models.Model):
         return self.nation
 
 class Feedback(models.Model):
-    user            = models.ForeignKey(model.UserModel, on_delete=models.CASCADE, related_name='realtor_feedback')
+    user            = models.ForeignKey(model.CustomUser, on_delete=models.CASCADE, related_name='realtor_feedback')
     property        = models.ForeignKey(model.Property, on_delete=models.CASCADE, related_name='property_feedback')
 
     def __str__(self) -> str:
