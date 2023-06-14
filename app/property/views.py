@@ -1,16 +1,17 @@
 from django.shortcuts import render
 from requests import request
-from rest_framework.response import Response
 
-from rest_framework import viewsets
+from .serializers import PropertySerializer
+from .permissions import IsPropertyOwner
 from .models import Property
 
+from rest_framework import viewsets
+from rest_framework.response import Response
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from .models import Property
-from .serializers import PropertySerializer
-from .permissions import IsPropertyOwner
+from rest_framework.pagination import PageNumberPagination
+
 
 class PropertyViewSet(viewsets.ModelViewSet):
     """
@@ -20,7 +21,27 @@ class PropertyViewSet(viewsets.ModelViewSet):
     """
     queryset = Property.objects.all()
     serializer_class = PropertySerializer
-    permission_classes = [IsAuthenticated]
+    
+    
+class CustomPagination(PageNumberPagination):
+    page_size = 10 
+    page_size_query_param = 'page_size' 
+    max_page_size = 100  
+
+class PropertyView(viewsets.ModelViewSet):
+    """
+    Класс для добавления, редактирования и удаления объявления, работает только для владельца
+    """
+    pagination_class = CustomPagination
+    serializer_class = PropertySerializer
+    permission_classes = [IsAuthenticated, IsAdminUser]
+    
+    def get(self, request):
+        queryset = Property.objects.all()  #filter(owner = request.user)
+        paginated_data = self.pagination_class().paginate_queryset(queryset, request)
+
+        return self.pagination_class().get_paginated_response(paginated_data)
+
 
     @action(detail=False, methods=['get'])
     def search(self, request, **kwargs):
@@ -83,6 +104,7 @@ class PropertyViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
+      
     def get_permissions(self):
         if self.action in ['create', 'update', 'partial_update', 'destroy']:
             permission_classes = [IsPropertyOwner]
