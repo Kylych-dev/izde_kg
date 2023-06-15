@@ -12,10 +12,11 @@ from .models import Property
 from .serializers import PropertySerializer
 from .permissions import IsPropertyOwner
 
+
 class PropertyViewSet(viewsets.ModelViewSet):
     """
     Класс отображения для объявлений
-    Пользователи могут читать, искать и фильтровать объявления
+    Пользователи могут читать, искать и фильтровать объchangesявления
     Авторы и владельцы могут выполнять CRUD-действия
     """
     queryset = Property.objects.all()
@@ -69,7 +70,6 @@ class PropertyViewSet(viewsets.ModelViewSet):
 
         region = request.query_params.get('region')
         if region:
-            
             queryset = queryset.filter(address__region=region)
 
         city = request.query_params.get('city')

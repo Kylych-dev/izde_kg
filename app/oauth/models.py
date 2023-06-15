@@ -8,7 +8,7 @@ from ..service import choices
 class UserModel(AbstractUser):
 
     email = models.EmailField(max_length=250, unique=True)
-    # password = models.CharField(max_length=120, null=True)
+    #gi password = models.CharField(max_length=120, null=True)
     first_name = models.CharField(max_length=250, null=True, blank=True)
     last_name = models.CharField(max_length=255, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
