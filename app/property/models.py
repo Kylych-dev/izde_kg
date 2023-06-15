@@ -110,14 +110,3 @@ class FeedBack(models.Model):
     def __str__(self):
         return f"{self.property} - {self.user} - {self.date.strftime('%Y-%m-%d %H:%M:%S')}"
 
-
-'''
-class PropertyRating(models.Model):
-    user = models.ForeignKey(UserModel)
-    property = models.ForeignKey(Property, on_delete=models.CASCADE)
-    rating = models.IntegerField(null=True, blank=True)
-    verfied = models.BooleanField(default=False)
-
-    def __str__(self):
-        return self.property.count
-'''
