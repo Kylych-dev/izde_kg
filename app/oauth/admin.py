@@ -1,5 +1,6 @@
 from django.contrib import admin
 from . import models
+from app.realtor.models import Agent
 
 
 @admin.register(models.CustomUser)
@@ -9,3 +10,6 @@ class UserModelAdmin(admin.ModelAdmin):
 
     # class Meta:
     #     model = models.UserModel
+
+
+admin.site.register(Agent)

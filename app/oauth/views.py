@@ -6,7 +6,12 @@ from rest_framework.settings import api_settings
 from django.contrib.auth import get_user_model
 from .serializers import (
     UserSerializer,
-    AuthTokenSerializer)
+    AuthTokenSerializer,
+    AgentViewSerializer)
+from .permissions import IsAgentOrAdminOrReadOnly
+
+from app.realtor.models import Agent
+
 
 User = get_user_model()
 
@@ -26,3 +31,12 @@ class CreateTokenView(ObtainAuthToken):
         user = serializer.validated_data['User']
         token, created = Token.objects.get_or_create(user=user)
         return Response({'token': token.key})
+
+
+class AgentInfoView(viewsets.ModelViewSet):
+    """
+    Класс для отображении информации об агенте
+    """
+    serializer_class = AgentViewSerializer
+    queryset = Agent.objects.all()
+    permission_classes = [IsAgentOrAdminOrReadOnly]

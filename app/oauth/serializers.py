@@ -4,6 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import (get_user_model,
                                  authenticate, )
 from .models import Language
+from app.realtor.models import Agent
 
 
 class LanguageSerializer(serializers.ModelSerializer):
@@ -87,3 +88,13 @@ class AuthTokenSerializer(serializers.Serializer):
 
         attrs['User'] = user
         return attrs
+
+
+class AgentViewSerializer(serializers.ModelSerializer):
+    """
+    Сериалайзер для отображения информации об агенте
+    """
+    class Meta:
+        model = Agent
+        fields = '__all__'
+        

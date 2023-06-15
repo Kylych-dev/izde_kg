@@ -14,6 +14,7 @@ class Image(models.Model):
         'Property', related_name='images', on_delete=models.CASCADE)
     file = models.ImageField(
         upload_to=service.upload_image_path, blank=True, null=True)
+
     def __str__(self) -> str:
         return f'{self.pk}'
 
@@ -31,20 +32,18 @@ class Property(models.Model):
     parking_space = models.CharField(
         _('parking_space'), **bm, choices=choices.PARKING_SPACE, unique=False)
     new_property = models.CharField(
-        _('new_property'), **bm, choices=choices.NEW_PROPERTY, unique=False) #новая или не новая
+        _('new_property'), **bm, choices=choices.NEW_PROPERTY, unique=False)  # новая или не новая
     purpose = models.CharField(
-        _('porpose'), **bm, choices=choices.PURPOSE, unique=True) #цель назначение
+        _('porpose'), **bm, choices=choices.PURPOSE, unique=True)  # цель назначение
     square_meter = models.DecimalField(
         blank=True, decimal_places=2, max_digits=20, default=0.00)
     address = models.ForeignKey('Address', verbose_name=_(
         "Address"), on_delete=models.CASCADE, blank=True)
-    style = models.CharField()
-    slug = models.SlugField(max_length=100)
 
+    slug = models.SlugField(max_length=100)
 
     def __str__(self):
         return self.slug
-
 
     class Meta:
         verbose_name = 'Property'
@@ -52,7 +51,8 @@ class Property(models.Model):
 
 
 class Advertisement(models.Model):
-    property = models.ForeignKey(Property, on_delete=models.CASCADE, related_name='property_advertisement')
+    property = models.ForeignKey(
+        Property, on_delete=models.CASCADE, related_name='property_advertisement')
     deal_choices = models.CharField(
         _('deal'), max_length=10, choices=choices.DEAL)
     currency_choices = models.CharField(
@@ -62,7 +62,7 @@ class Advertisement(models.Model):
     created_date = models.DateField()
     additional_info = models.TextField()
     feedback = models.ManyToManyField('FeedBack')
-    is_approved = models.BooleanField(default=False) #статус одобрения
+    is_approved = models.BooleanField(default=False)  # статус одобрения
     duration = models.CharField(
         _('duration'), **bm, choices=choices.DURATION, unique=False)
 
@@ -109,4 +109,3 @@ class FeedBack(models.Model):
 
     def __str__(self):
         return f"{self.property} - {self.user} - {self.date.strftime('%Y-%m-%d %H:%M:%S')}"
-
