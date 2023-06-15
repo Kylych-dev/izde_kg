@@ -14,11 +14,8 @@ class Image(models.Model):
         'Property', related_name='images', on_delete=models.CASCADE)
     file = models.ImageField(
         upload_to=service.upload_image_path, blank=True, null=True)
-
-    # main = models.BooleanField(default=False)
-
     def __str__(self) -> str:
-        return f'{self.name}'
+        return f'{self.pk}'
 
 
 class Property(models.Model):
@@ -34,32 +31,20 @@ class Property(models.Model):
     parking_space = models.CharField(
         _('parking_space'), **bm, choices=choices.PARKING_SPACE, unique=False)
     new_property = models.CharField(
-        _('new_property'), **bm, choices=choices.NEW_PROPERTY, unique=False)
+        _('new_property'), **bm, choices=choices.NEW_PROPERTY, unique=False) #новая или не новая
     purpose = models.CharField(
-        _('porpose'), **bm, choices=choices.PURPOSE, unique=True)
-    duration = models.CharField(
-        _('duration'), **bm, choices=choices.DURATION, unique=False)
+        _('porpose'), **bm, choices=choices.PURPOSE, unique=True) #цель назначение
     square_meter = models.DecimalField(
         blank=True, decimal_places=2, max_digits=20, default=0.00)
-    # images = models.ManyToManyField(Image, related_name='prop_images')
-    featrued = models.BooleanField(default=False)
     address = models.ForeignKey('Address', verbose_name=_(
         "Address"), on_delete=models.CASCADE, blank=True)
+    style = models.CharField()
     slug = models.SlugField(max_length=100)
 
-    # price = models.DecimalField(decimal_places=0, max_digits=20, default=0.00)
-    # main_image = models.OneToOneField(Image, related_name='property')
-    # description = models.TextField()
-    # slug = models.SlugField(blank=True, unique=True)
-    # title = models.CharField(max_length=120)
-    # realtor = models.ForeignKey(Realtor, on_delete=models.CASCADE)
-    # category = models.ForeignKey(Category, default='', max_length=300, unique=False, on_delete=models.CASCADE)
-    # images = models.ImageField(upload_to=service.upload_image_path, null=True, blank=True)
-    # active = models.BooleanField(default=True)
-    # timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.slug
+
 
     class Meta:
         verbose_name = 'Property'
@@ -67,6 +52,7 @@ class Property(models.Model):
 
 
 class Advertisement(models.Model):
+    property = models.ForeignKey(Property, on_delete=models.CASCADE, related_name='property_advertisement')
     deal_choices = models.CharField(
         _('deal'), max_length=10, choices=choices.DEAL)
     currency_choices = models.CharField(
@@ -76,6 +62,9 @@ class Advertisement(models.Model):
     created_date = models.DateField()
     additional_info = models.TextField()
     feedback = models.ManyToManyField('FeedBack')
+    is_approved = models.BooleanField(default=False) #статус одобрения
+    duration = models.CharField(
+        _('duration'), **bm, choices=choices.DURATION, unique=False)
 
 
 class Address(models.Model):
@@ -96,21 +85,26 @@ class City(models.Model):
     title = models.CharField(max_length=50)
 
     def __str__(self):
-        return self.title
+        return str(self.title)
 
 
 class District(models.Model):
     title = models.CharField(max_length=50)
 
     def __str__(self):
-        return self.title
+        return str(self.title)
 
 
 class FeedBack(models.Model):
+    """_summary_
+    Моделька отзывов 
+    """
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     property = models.ForeignKey(
         Property, on_delete=models.CASCADE, related_name='feedback')
     comment = models.TextField()
+    parent_comment = models.ForeignKey(
+        'self', on_delete=models.CASCADE, null=True, blank=True, related_name='replies')
     date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

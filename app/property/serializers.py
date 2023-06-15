@@ -11,7 +11,7 @@ class FeedBackSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = FeedBack
-        fields = ['id', 'comment', 'date', 'user', 'property']
+        fields = '__all__'
 
 
 class PropertySerializer(serializers.ModelSerializer):
@@ -21,6 +21,9 @@ class PropertySerializer(serializers.ModelSerializer):
     feedback = FeedBackSerializer(many=True)
 
     class Meta:
+        """
+
+        """
         model = Property
         fields = '__all__'
 

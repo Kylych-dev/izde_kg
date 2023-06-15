@@ -38,12 +38,6 @@ class Language(models.Model):
         return self.language
 
 
-class Nation(models.Model):
-    nation          = models.CharField(max_length=50)
-
-    def __str__(self) -> str:
-        return self.nation
-
 class Feedback(models.Model):
     user            = models.ForeignKey(model.CustomUser, on_delete=models.CASCADE, related_name='realtor_feedback')
     property        = models.ForeignKey(model.Property, on_delete=models.CASCADE, related_name='property_feedback')

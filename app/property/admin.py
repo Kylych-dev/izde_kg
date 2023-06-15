@@ -1,41 +1,33 @@
-from django.contrib import admin
-from . import models
-from .models import Property, Address, City, District, FeedBack
+from django.contrib import admin #загрузка админки
+from .models import Property, Address, City, District, FeedBack, Advertisement #импорт моделек 
 
-'''
-Image
-Property
-Advertisement
-Address
-City
-District
-FeedBack
-
-'''
 class FeedBackInline(admin.TabularInline):
+    """
+    Класс для отображения отызвово
+    """
     model = FeedBack
     extra = 0
 
-@admin.register(models.Property)
+@admin.register(Property)
 class PropertyAdmin(admin.ModelAdmin):
     list_display = ['__str__', 'address']
     list_filter = ['new_property',]
     inlines = [FeedBackInline]
     
     class Meta:
-        model = models.Property
+        model = Property
 
 
 
 
 
-@admin.register(models.Advertisement)
+@admin.register(Advertisement)
 class AdvertisementAdmin(admin.ModelAdmin):
     list_display = ['__str__', 'price', 'additional_info']
     search_fields = ['price', 'deal_choices']
 
     class Meta:
-        models = models.Advertisement
+        models = Advertisement
         
 @admin.register(FeedBack)
 class FeedBackAdmin(admin.ModelAdmin):

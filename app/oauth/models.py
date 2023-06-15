@@ -51,9 +51,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     phone = models.IntegerField(blank=True, null=True)
     is_agent = models.BooleanField(default=False)
     date_joined = models.DateTimeField(auto_now_add=True)
-
     languages = models.ManyToManyField(Language)
-
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
 
