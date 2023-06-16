@@ -9,7 +9,6 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from django.shortcuts import render
 
 
-
 class PropertyViewSet(viewsets.ModelViewSet):
     """
     Класс отображения для объявлений
@@ -19,7 +18,6 @@ class PropertyViewSet(viewsets.ModelViewSet):
     queryset = Property.objects.all()
     serializer_class = PropertySerializer
     permission_classes = [IsAuthenticated]
-<<<<<<< HEAD
 
     @action(detail=False, methods=['get'])
     def search(self, request, **kwargs):
@@ -69,12 +67,12 @@ class PropertyViewSet(viewsets.ModelViewSet):
         region = request.query_params.get('region')
         if region:
             queryset = queryset.filter(address__region=region)
-=======
+
     filter_backends = [filters.OrderingFilter, filters.SearchFilter]
-    search_fields = ['storey', 'bedroom', 'bathroom', 
-                     'furnished', 'parking_space', 
-                     'new_property', 'purpose', 'duration', 
-                     'square_meter', 'address__region', 
+    search_fields = ['storey', 'bedroom', 'bathroom',
+                     'furnished', 'parking_space',
+                     'new_property', 'purpose', 'duration',
+                     'square_meter', 'address__region',
                      'address__city__title', 'address__district__title']
 
     # @action(detail=False, methods=['get'])
@@ -124,9 +122,8 @@ class PropertyViewSet(viewsets.ModelViewSet):
 
     #     region = request.query_params.get('region')
     #     if region:
-            
+
     #         queryset = queryset.filter(address__region=region)
->>>>>>> 86c92ffcffcec10002b5c305fd50665018884bd8
 
     #     city = request.query_params.get('city')
     #     if city:

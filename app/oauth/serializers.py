@@ -3,8 +3,9 @@ from rest_framework import status
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import (get_user_model,
                                  authenticate, )
-from .models import Language
-from app.realtor.models import Agent
+from .models import (Language, Region)
+
+User = get_user_model()
 
 
 class LanguageSerializer(serializers.ModelSerializer):
@@ -13,46 +14,24 @@ class LanguageSerializer(serializers.ModelSerializer):
         fields = ['title']
 
 
-class UserSerializer(serializers.ModelSerializer):
-    "Сериаляйзер для регистрации пользователя, который ничего не публикует"
+class RegionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Region
+        fields = ['title']
 
-    languages = LanguageSerializer(many=True)
+
+class UserSerializer(serializers.ModelSerializer):
     confirm_password = serializers.CharField(required=True, write_only=True)
 
     class Meta:
-        model = get_user_model()
-        fields = ['photo',
-                  'full_name',
-                  'languages',
-                  'email',
-                  'phone',
-                  'is_agent',
+        model = User
+        fields = ['email',
                   'password',
                   'confirm_password']
         extra_kwargs = {'password': {'write_only': True, 'min_length': 8}}
 
     def create(self, validated_data):
-        language_data = validated_data.pop('languages')
-        user = get_user_model().objects.create_user(**validated_data)
-        for language in language_data:
-            language, created = Language.objects.get_or_create(title=language['title'])
-            user.languages.add(language)
-        return user
-
-    def update(self, instance, validated_data):
-        password = validated_data.pop("password", None)
-        user = super().update(instance, validated_data)
-
-        if password:
-            user.set_password(password)
-            user.save()
-        return user
-
-    def validated_full_name(self, value):
-        if len(value) < 2:
-            raise serializers.ValidationError(_("Name is too short"))
-        else:
-            return value
+        return get_user_model().objects.create_user(**validated_data)
 
     def validate(self, attrs):
         confirm_password = attrs.pop('confirm_password')
@@ -65,8 +44,57 @@ class UserSerializer(serializers.ModelSerializer):
         return attrs
 
 
+class AgentSerializer(serializers.ModelSerializer):
+    region = RegionSerializer(many=True, required=True)
+    languages = LanguageSerializer(many=True, required=True)
+    full_name = serializers.CharField(required=True)
+    phone = serializers.IntegerField(required=True)
+
+    class Meta:
+        model = User
+        fields = ['photo',
+                  'full_name',
+                  'description',
+                  'phone',
+                  'languages',
+                  'experience',
+                  'region',
+                  'is_agent',
+                  ]
+
+    def validated_full_name(self, value):
+        if len(value) < 2:
+            raise serializers.ValidationError(_("Name is too short"))
+        else:
+            return value
+
+    def update(self, instance, validated_data):
+        regions_data = validated_data.pop('region')
+        languages_data = validated_data.pop('languages')
+        instance.photo = validated_data.get('photo', instance.photo)
+        instance.full_name = validated_data.get('full_name', instance.full_name)
+        instance.description = validated_data.get('description', instance.description)
+        instance.phone = validated_data.get('phone', instance.phone)
+        instance.experience = validated_data.get('experience', instance.experience)
+        instance.is_agent = True
+        instance.save()
+
+        for language_data in languages_data:
+            title = language_data['title'].capitalize()
+            language, _ = Language.objects.get_or_create(title=title)
+            instance.languages.add(language)
+
+        for region_data in regions_data:
+            title = region_data['title'].capitalize()
+            region, _ = Region.objects.get_or_create(title=title)
+            instance.region.add(region)
+
+        return instance
+
+
 class AuthTokenSerializer(serializers.Serializer):
     """Serializer for the User auth token."""
+
     email = serializers.EmailField()
     password = serializers.CharField(
         style={'input_type': 'password'},
@@ -90,11 +118,7 @@ class AuthTokenSerializer(serializers.Serializer):
         return attrs
 
 
-class AgentViewSerializer(serializers.ModelSerializer):
-    """
-    Сериалайзер для отображения информации об агенте
-    """
+class UserAllSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Agent
+        model = get_user_model()
         fields = '__all__'
-        
