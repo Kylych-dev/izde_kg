@@ -122,3 +122,14 @@ class UserAllSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
         fields = '__all__'
+        
+    def to_representation(self, instance):
+        return super().to_representation(instance)
+        
+
+class FeedbackAgent(serializers.ModelSerializer):
+    """
+    Сериалайзер для отображения отзывов об агенте
+    """
+    pass
+
