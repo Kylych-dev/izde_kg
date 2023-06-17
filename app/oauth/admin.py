@@ -1,12 +1,11 @@
 from django.contrib import admin
 from . import models
-from app.realtor.models import Agent
-from app.realtor.models import Language
+
 
 
 @admin.register(models.CustomUser)
 class UserModelAdmin(admin.ModelAdmin):
-    list_display = ['full_name']
+    list_display = ['id', 'full_name']
     list_filter = ['email']
 
     # class Meta:
@@ -20,6 +19,3 @@ class LanguageAdmin(admin.ModelAdmin):
 
 
 
-
-admin.site.register(Agent)
-admin.site.register(Language)
