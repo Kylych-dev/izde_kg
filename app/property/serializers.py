@@ -1,6 +1,6 @@
 from rest_framework import serializers
-from .models import Property, FeedBack, Image, Address, District, City
 
+from .models import Property, FeedBack, Image, Address, District, City
 
 
 class PropertyListSerializer(serializers.ModelSerializer):
@@ -8,10 +8,13 @@ class PropertyListSerializer(serializers.ModelSerializer):
     Сериализатор для отображения списка объявлений
     Ограниченный набор полей
     """
+
     class Meta:
         model = Property
         fields = ('id', 'owner', 'slug', 'purpose')  # Укажите только нужные поля
 
+
+from .models import Property, FeedBack, Image, Advertisement
 
 
 class FeedBackSerializer(serializers.ModelSerializer):
@@ -30,6 +33,7 @@ class PropertySerializer(serializers.ModelSerializer):
     """
     Сериализатор для отображения всех объявлений
     """
+
     class Meta:
         model = Property
         fields = '__all__'
@@ -53,15 +57,17 @@ class ImagesSerializer(serializers.ModelSerializer):
     """
     Сериалайзер для отображения картин
     """
+
     class Meta:
         model = Image
-        fields = ['file',]
+        fields = ['file', ]
 
 
 class AddressSerializer(serializers.ModelSerializer):
     """
     Сериалайзер для отображения адреса
     """
+
     class Meta:
         model = Address
         fields = '__all__'
@@ -77,15 +83,23 @@ class DistrictSerializer(serializers.ModelSerializer):
     """
     Сериалайзер для отображения района
     """
+
     class Meta:
         model = District
-        exclude = ['id',]
+        exclude = ['id', ]
 
 
 class CitySerializer(serializers.ModelSerializer):
     """
     Сериалайзер для отображения города
     """
+
     class Meta:
         model = City
+
+
+class AdvertisementSerializer(serializers.ModelSerializer):
+    "Временный сериалязер"
+    class Meta:
+        model = Advertisement
         fields = '__all__'

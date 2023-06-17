@@ -63,12 +63,15 @@ class Advertisement(models.Model):
         _('currency'), max_length=10, choices=choices.CURRENCY)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    created_date = models.DateField()
+    created_date = models.DateField(auto_now_add=True)
     additional_info = models.TextField()
-    feedback = models.ManyToManyField('FeedBack')
-    is_approved = models.BooleanField(default=False)  # статус одобрения
+    feedback = models.ManyToManyField('FeedBack', default=None, blank=True)
+    is_approved = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
     duration = models.CharField(
         _('duration'), **bm, choices=choices.DURATION, unique=False)
+    wishlist = models.ManyToManyField(CustomUser, related_name='wishlist_advertisement',
+                                      default=None, blank=True)
 
 
 class Address(models.Model):

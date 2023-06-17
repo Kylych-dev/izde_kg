@@ -2,7 +2,6 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from .managers import UserManager
-from app.service import choices
 
 
 class Language(models.Model):
@@ -48,11 +47,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         verbose_name_plural = "Пользователи"
 
 
-class Company(models.Model):
-    logo = models.ImageField(blank=True, null=True)
-    title = models.CharField(max_length=100)
-
-
 class FeedBack(models.Model):
     agent = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="feedback_agent")
     author = models.ForeignKey(
@@ -64,3 +58,4 @@ class FeedBack(models.Model):
 
     def __str__(self):
         return f" {self.agent} - {self.date.strftime('%Y-%m-%d %H:%M:%S')}"
+
