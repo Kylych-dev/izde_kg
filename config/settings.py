@@ -42,7 +42,6 @@ INSTALLED_APPS = [
 
     # Apps
     'app.property.apps.PropertyConfig',
-    'app.realtor.apps.RealtorConfig',
     'app.oauth.apps.OauthConfig',
 
 ]

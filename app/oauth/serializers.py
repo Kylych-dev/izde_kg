@@ -118,7 +118,7 @@ class AuthTokenSerializer(serializers.Serializer):
         return attrs
 
 
-class UserAllSerializer(serializers.ModelSerializer):
+class AgentInfoSerializer(serializers.ModelSerializer):
     class Meta:
-        model = get_user_model()
-        fields = '__all__'
+        model = User
+        fields = ['']

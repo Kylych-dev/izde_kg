@@ -1,14 +1,16 @@
-from django.shortcuts import get_object_or_404
-from rest_framework import generics
+from rest_framework import generics, viewsets
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.settings import api_settings
 from django.contrib.auth import get_user_model
 from .serializers import (
     UserSerializer,
-    AuthTokenSerializer, AgentSerializer)
+    AuthTokenSerializer,
+    AgentSerializer,
+    AgentInfoSerializer)
 
 User = get_user_model()
 
@@ -38,10 +40,11 @@ class CreateTokenView(ObtainAuthToken):
         token, created = Token.objects.get_or_create(user=user)
         return Response({'token': token.key})
 
-# class AgentInfoView(viewsets.ModelViewSet):
-#     """
-#     Класс для отображении информации об агенте
-#     """
-#     serializer_class = AgentViewSerializer
-#     queryset = Agent.objects.all()
-#     permission_classes = [IsAgentOrAdminOrReadOnly]
+
+class AgentInfoViewSet(viewsets.ModelViewSet):
+    """
+    Класс для отображении информации об агенте
+    """
+    serializer_class = AgentInfoSerializer
+    queryset = User.objects.all()
+    # permission_classes = [IsAgentOrAdminOrReadOnly]

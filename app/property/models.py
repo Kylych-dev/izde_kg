@@ -67,6 +67,7 @@ class Advertisement(models.Model):
         _('duration'), **bm, choices=choices.DURATION, unique=False)
 
 
+
 class Address(models.Model):
     region = models.CharField(
         _('region'), **bm, choices=choices.REGION_CHOICES, unique=False)
