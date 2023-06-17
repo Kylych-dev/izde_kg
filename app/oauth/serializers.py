@@ -98,3 +98,12 @@ class AgentViewSerializer(serializers.ModelSerializer):
         model = Agent
         fields = '__all__'
         
+    def to_representation(self, instance):
+        return super().to_representation(instance)
+        
+
+class FeedbackAgent(serializers.ModelSerializer):
+    """
+    Сериалайзер для отображения отзывов об агенте
+    """
+    pass

@@ -1,4 +1,4 @@
-from .serializers import PropertySerializer
+from .serializers import PropertySerializer, PropertyListSerializer
 from .permissions import IsPropertyOwner
 from .models import Property
 
@@ -24,7 +24,11 @@ class PropertyViewSet(viewsets.ModelViewSet):
                      'new_property', 'purpose', 'duration', 
                      'square_meter', 'address__region', 
                      'address__city__title', 'address__district__title']
-
+    
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return PropertyListSerializer
+        return PropertySerializer
     # @action(detail=False, methods=['get'])
     # def search(self, request, **kwargs):
     #     """
