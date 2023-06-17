@@ -58,3 +58,4 @@ class FeedBack(models.Model):
 
     def __str__(self):
         return f" {self.agent} - {self.date.strftime('%Y-%m-%d %H:%M:%S')}"
+

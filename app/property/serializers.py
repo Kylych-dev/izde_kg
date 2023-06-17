@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Property, FeedBack, Image
+from .models import Property, FeedBack, Image, Advertisement
 
 
 class FeedBackSerializer(serializers.ModelSerializer):
@@ -18,6 +18,7 @@ class PropertySerializer(serializers.ModelSerializer):
     """
     Сериализатор для отображения всех объявлений
     """
+
     class Meta:
         model = Property
         fields = '__all__'
@@ -38,9 +39,13 @@ class ImagesSerializer(serializers.ModelSerializer):
     """
     Сериалайзер для отображения картин
     """
+
     class Meta:
         model = Image
         fields = '__all__'
-        
 
 
+class AdvertisementSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Advertisement
+        fields = '__all__'

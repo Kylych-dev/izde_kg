@@ -1,7 +1,6 @@
-from rest_framework import generics, viewsets
+from rest_framework import generics, viewsets, status
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
-from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.settings import api_settings
@@ -10,7 +9,10 @@ from .serializers import (
     UserSerializer,
     AuthTokenSerializer,
     AgentSerializer,
-    AgentInfoSerializer)
+    AgentInfoSerializer
+)
+from app.property.models import Advertisement
+from app.property.serializers import AdvertisementSerializer
 
 User = get_user_model()
 
@@ -48,3 +50,28 @@ class AgentInfoViewSet(viewsets.ModelViewSet):
     serializer_class = AgentInfoSerializer
     queryset = User.objects.all()
     # permission_classes = [IsAgentOrAdminOrReadOnly]
+
+
+class AddWishlistView(generics.GenericAPIView):
+    queryset = Advertisement.objects.all()
+    serializer_class = AdvertisementSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request, *args, **kwargs):
+        advertisement = self.get_object()
+        in_wish_list = Advertisement.objects.filter(wishlist__id=request.user.id,
+                                                    pk=advertisement.id).exists()
+        if in_wish_list:
+            advertisement.wishlist.remove(request.user)
+            return Response(status=status.HTTP_204_NO_CONTENT,
+                            data={"message": "Deleted from your wishlist"})
+        advertisement.wishlist.add(request.user)
+        return Response(status=status.HTTP_200_OK, data={"message": "Added to your wishlist"})
+
+
+class AdsInUserWishListView(generics.ListAPIView):
+    serializer_class = AdvertisementSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        return Advertisement.objects.filter(wishlist=self.request.user).order_by('-created_date')
