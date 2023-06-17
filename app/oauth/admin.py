@@ -2,6 +2,7 @@ from django.contrib import admin
 from . import models
 
 
+
 @admin.register(models.CustomUser)
 class UserModelAdmin(admin.ModelAdmin):
     list_display = ['id', 'full_name']
@@ -9,6 +10,12 @@ class UserModelAdmin(admin.ModelAdmin):
 
     # class Meta:
     #     model = models.UserModel
+
+
+@admin.register(models.Language)
+class LanguageAdmin(admin.ModelAdmin):
+    list_display = ['title']
+    list_filter = ['title']
 
 
 
