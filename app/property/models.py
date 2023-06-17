@@ -62,10 +62,11 @@ class Advertisement(models.Model):
     created_date = models.DateField()
     additional_info = models.TextField()
     feedback = models.ManyToManyField('FeedBack')
-    is_approved = models.BooleanField(default=False)  # статус одобрения
+    is_approved = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
     duration = models.CharField(
         _('duration'), **bm, choices=choices.DURATION, unique=False)
-
+    wishlist = models.ManyToManyField(CustomUser, related_name='wishlist_advertisement')
 
 
 class Address(models.Model):
