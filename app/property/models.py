@@ -17,6 +17,10 @@ class Image(models.Model):
 
     def __str__(self) -> str:
         return f'{self.pk}'
+    
+    class Meta:
+        verbose_name = "Изображение"
+        verbose_name_plural = "Изображения"
 
 
 class Property(models.Model):
@@ -46,8 +50,8 @@ class Property(models.Model):
         return self.slug
 
     class Meta:
-        verbose_name = 'Property'
-        verbose_name_plural = 'Property'
+        verbose_name = 'Недвижимость'
+        verbose_name_plural = 'Недвижимости'
 
 
 class Advertisement(models.Model):
