@@ -1,4 +1,5 @@
 from rest_framework import serializers
+<<<<<<< HEAD
 from .models import Property, FeedBack, Image, Address, District, City
 
 
@@ -12,6 +13,9 @@ class PropertyListSerializer(serializers.ModelSerializer):
         model = Property
         fields = ('id', 'owner', 'slug', 'purpose')  # Укажите только нужные поля
 
+=======
+from .models import Property, FeedBack, Image, Advertisement
+>>>>>>> izde_T1
 
 
 class FeedBackSerializer(serializers.ModelSerializer):
@@ -30,6 +34,7 @@ class PropertySerializer(serializers.ModelSerializer):
     """
     Сериализатор для отображения всех объявлений
     """
+
     class Meta:
         model = Property
         fields = '__all__'
@@ -53,6 +58,7 @@ class ImagesSerializer(serializers.ModelSerializer):
     """
     Сериалайзер для отображения картин
     """
+
     class Meta:
         model = Image
         fields = ['file',]
@@ -65,6 +71,7 @@ class AddressSerializer(serializers.ModelSerializer):
     class Meta:
         model = Address
         fields = '__all__'
+<<<<<<< HEAD
 
     def to_representation(self, instance):
         context = super().to_representation(instance)
@@ -88,4 +95,11 @@ class CitySerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = City
+=======
+
+
+class AdvertisementSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Advertisement
+>>>>>>> izde_T1
         fields = '__all__'

@@ -118,8 +118,9 @@ class AuthTokenSerializer(serializers.Serializer):
         return attrs
 
 
-class UserAllSerializer(serializers.ModelSerializer):
+class AgentInfoSerializer(serializers.ModelSerializer):
     class Meta:
+<<<<<<< HEAD
         model = get_user_model()
         fields = '__all__'
         
@@ -133,3 +134,7 @@ class FeedbackAgent(serializers.ModelSerializer):
     """
     pass
 
+=======
+        model = User
+        fields = ['']
+>>>>>>> izde_T1
