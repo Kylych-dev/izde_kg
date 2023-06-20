@@ -4,11 +4,12 @@ from .views import (UserAPIView,
                     CreateTokenView,
                     AgentAPIView,
                     AddWishlistView,
-                    AdsInUserWishListView)
+                    AdsInUserWishListView,
+                    AgentInfoViewSet)
 
 router = DefaultRouter()
 # router.register(r'users', CustomUserViewSet, basename='user')
-# router.register(r'agents', AgentInfoViewSet, basename='agents')
+router.register(r'agents', AgentInfoViewSet, basename='agents')
 
 urlpatterns = [
     path('create/', UserAPIView.as_view(), name='create-user'),
@@ -18,4 +19,4 @@ urlpatterns = [
     path('wishlist/', AdsInUserWishListView.as_view(), name='user-wishlist')
 
 ]
-# urlpatterns += router.urls
+urlpatterns += router.urls

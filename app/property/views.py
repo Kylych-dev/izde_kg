@@ -62,7 +62,8 @@ class PropertyViewSet(viewsets.ModelViewSet):
         square_meter_min = request.query_params.get('square_meter_min')
         square_meter_max = request.query_params.get('square_meter_max')
         if square_meter_min and square_meter_max:
-            queryset = queryset.filter(square_meter__range=(square_meter_min, square_meter_max))
+            queryset = queryset.filter(square_meter__range=(
+                square_meter_min, square_meter_max))
 
         region = request.query_params.get('region')
         if region:
@@ -74,7 +75,7 @@ class PropertyViewSet(viewsets.ModelViewSet):
                      'new_property', 'purpose', 'duration',
                      'square_meter', 'address__region',
                      'address__city__title', 'address__district__title']
-    
+
     def get_serializer_class(self):
         if self.action == 'list':
             return PropertyListSerializer
