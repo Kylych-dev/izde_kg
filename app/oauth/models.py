@@ -23,12 +23,12 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     photo = models.ImageField(_("photo"), blank=True, null=True)
     full_name = models.CharField(_("full_name"), max_length=60)
     email = models.EmailField(_("email address"), unique=True)
-    phone = models.IntegerField(blank=True, null=True)
-    description = models.TextField(blank=True, null=True)
-    is_agent = models.BooleanField(default=False)
-    date_joined = models.DateTimeField(auto_now_add=True)
+    phone = models.IntegerField(_('phone'), blank=True, null=True)
+    description = models.TextField(_('description'), blank=True, null=True)
+    is_agent = models.BooleanField(_('is_agent'), default=False)
+    date_joined = models.DateTimeField(_('date_joined'), auto_now_add=True)
     languages = models.ManyToManyField(Language)
-    experience = models.IntegerField(blank=True, null=True)
+    experience = models.IntegerField(_('experience'), blank=True, null=True)
     region = models.ManyToManyField(Region)
 
     is_staff = models.BooleanField(default=False)
@@ -50,12 +50,11 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 class FeedBack(models.Model):
     agent = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="feedback_agent")
     author = models.ForeignKey(
-        CustomUser, on_delete=models.CASCADE, related_name='author_feedback')
-    comment = models.TextField()
+                               CustomUser, on_delete=models.CASCADE, related_name='author_feedback')
+    comment = models.TextField(_('comment'))
     parent_comment = models.ForeignKey(
-        'self', on_delete=models.CASCADE, null=True, blank=True, related_name='replies')
-    date = models.DateTimeField(auto_now_add=True)
+                                       'self', on_delete=models.CASCADE, null=True, blank=True, related_name='replies')
+    date = models.DateTimeField(_('date'), auto_now_add=True)
 
     def __str__(self):
         return f" {self.agent} - {self.date.strftime('%Y-%m-%d %H:%M:%S')}"
-

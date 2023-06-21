@@ -38,7 +38,7 @@ class Property(models.Model):
     new_property = models.CharField(
         _('new_property'), **bm, choices=choices.NEW_PROPERTY, unique=False)  # новая или не новая
     purpose = models.CharField(
-        _('porpose'), **bm, choices=choices.PURPOSE, unique=True)  # цель назначение
+        _('purpose'), **bm, choices=choices.PURPOSE, unique=True)  # цель назначение
     square_meter = models.DecimalField(
         blank=True, decimal_places=2, max_digits=20, default=0.00)
     address = models.ForeignKey('Address', verbose_name=_(

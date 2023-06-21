@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'drf_yasg',
 
+
     # Apps
     'app.property.apps.PropertyConfig',
     'app.oauth.apps.OauthConfig',
@@ -55,7 +56,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
 
 AUTH_USER_MODEL_MANAGER = 'oauth.UserManager'
 
@@ -129,8 +129,21 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'oauth.CustomUser'
 
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
     ]
 }
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"  # smtp-relay.sendinblue.com
+EMAIL_USE_TLS = True  # False
+EMAIL_PORT = 587
+EMAIL_HOST_USER = "azizamukashkyzy@gmail.com"  # your email address
+EMAIL_HOST_PASSWORD = "barcelona-love0207"  # your password
+
+
+
+
+

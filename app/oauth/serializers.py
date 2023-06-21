@@ -120,21 +120,19 @@ class AuthTokenSerializer(serializers.Serializer):
 
 class AgentInfoSerializer(serializers.ModelSerializer):
     class Meta:
-<<<<<<< HEAD
         model = get_user_model()
         fields = '__all__'
-        
+
     def to_representation(self, instance):
         return super().to_representation(instance)
-        
+
 
 class FeedbackAgent(serializers.ModelSerializer):
     """
     Сериалайзер для отображения отзывов об агенте
     """
-    pass
-
-=======
-        model = User
-        fields = ['']
->>>>>>> izde_T1
+    # pass
+    #
+    #
+    #     model = User
+    #     fields = ['']

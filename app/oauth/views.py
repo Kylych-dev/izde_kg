@@ -10,9 +10,10 @@ from .serializers import (
     AuthTokenSerializer,
     AgentSerializer,
     AgentInfoSerializer
+
 )
 from app.property.models import Advertisement
-from app.property.serializers import AdvertisementSerializer
+from app.property.serializers import AdvertisementSerializer, AdDetailSerializer
 
 User = get_user_model()
 
@@ -75,3 +76,11 @@ class AdsInUserWishListView(generics.ListAPIView):
 
     def get_queryset(self):
         return Advertisement.objects.filter(wishlist=self.request.user).order_by('-created_date')
+
+
+class AdsInUserWishListDetailView(generics.RetrieveAPIView):
+    serializer_class = AdDetailSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        return Advertisement.objects.filter(wishlist=self.request.user)

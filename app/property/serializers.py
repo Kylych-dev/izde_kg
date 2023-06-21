@@ -1,7 +1,6 @@
 from rest_framework import serializers
-<<<<<<< HEAD
-from .models import Property, FeedBack, Image, Address, District, City
-
+from .models import (Property, FeedBack, Image, Address, District, City, Advertisement)
+from app.oauth.serializers import UserSerializer
 
 
 class PropertyListSerializer(serializers.ModelSerializer):
@@ -9,13 +8,10 @@ class PropertyListSerializer(serializers.ModelSerializer):
     Сериализатор для отображения списка объявлений
     Ограниченный набор полей
     """
+
     class Meta:
         model = Property
         fields = ('id', 'owner', 'slug', 'purpose')  # Укажите только нужные поля
-
-=======
-from .models import Property, FeedBack, Image, Advertisement
->>>>>>> izde_T1
 
 
 class FeedBackSerializer(serializers.ModelSerializer):
@@ -61,17 +57,17 @@ class ImagesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Image
-        fields = ['file',]
+        fields = ['file', ]
 
 
 class AddressSerializer(serializers.ModelSerializer):
     """
     Сериалайзер для отображения адреса
     """
+
     class Meta:
         model = Address
         fields = '__all__'
-<<<<<<< HEAD
 
     def to_representation(self, instance):
         context = super().to_representation(instance)
@@ -84,22 +80,40 @@ class DistrictSerializer(serializers.ModelSerializer):
     """
     Сериалайзер для отображения района
     """
+
     class Meta:
         model = District
-        exclude = ['id',]
+        exclude = ['id', ]
 
 
 class CitySerializer(serializers.ModelSerializer):
     """
     Сериалайзер для отображения города
     """
+
     class Meta:
         model = City
-=======
 
 
 class AdvertisementSerializer(serializers.ModelSerializer):
     class Meta:
         model = Advertisement
->>>>>>> izde_T1
-        fields = '__all__'
+        fields = (
+            'deal_choices',
+            'currency_choices',
+            'price',
+            'additional_info'
+        )
+
+    def to_representation(self, instance):
+        context = super().to_representation(instance)
+        context['location'] = AddressSerializer(
+            instance.property.address).data
+        context['by'] = instance.property.owner.full_name
+        return context
+
+
+class AdDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Advertisement
+        exclude = ('id',)
