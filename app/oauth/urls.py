@@ -6,11 +6,15 @@ from .views import (UserAPIView,
                     AgentAPIView,
                     AddWishlistView,
                     AdsInUserWishListView,
+<<<<<<< HEAD
                     AdsInUserWishListDetailView)
+=======
+                    AgentInfoViewSet)
+>>>>>>> 371cd79ccc901e03daee60a319794b058f75582e
 
 router = DefaultRouter()
 # router.register(r'users', CustomUserViewSet, basename='user')
-# router.register(r'agents', AgentInfoViewSet, basename='agents')
+router.register(r'agents', AgentInfoViewSet, basename='agents')
 
 urlpatterns = [
     path('register/', UserAPIView.as_view(), name='create-user'),
@@ -22,4 +26,4 @@ urlpatterns = [
 
 
 ]
-# urlpatterns += router.urls
+urlpatterns += router.urls

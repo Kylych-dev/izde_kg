@@ -65,7 +65,7 @@ class Advertisement(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     created_date = models.DateField(auto_now_add=True)
     additional_info = models.TextField()
-    feedback = models.ManyToManyField('FeedBack', default=None, blank=True)
+    feedback = models.ManyToManyField('FeedBack', default=None, blank=True) #
     is_approved = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     duration = models.CharField(

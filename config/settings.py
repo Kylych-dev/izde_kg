@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'drf_yasg',
+    'phonenumber_field',
 
 
     # Apps
@@ -135,6 +136,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ]
 }
+<<<<<<< HEAD
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"  # smtp-relay.sendinblue.com
@@ -147,3 +149,5 @@ EMAIL_HOST_PASSWORD = "barcelona-love0207"  # your password
 
 
 
+=======
+>>>>>>> 371cd79ccc901e03daee60a319794b058f75582e

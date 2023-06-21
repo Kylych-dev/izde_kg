@@ -1,6 +1,11 @@
 from rest_framework import serializers
+<<<<<<< HEAD
 from .models import (Property, FeedBack, Image, Address, District, City, Advertisement)
 from app.oauth.serializers import UserSerializer
+=======
+
+from .models import Property, FeedBack, Image, Address, District, City
+>>>>>>> 371cd79ccc901e03daee60a319794b058f75582e
 
 
 class PropertyListSerializer(serializers.ModelSerializer):
@@ -13,6 +18,12 @@ class PropertyListSerializer(serializers.ModelSerializer):
         model = Property
         fields = ('id', 'owner', 'slug', 'purpose')  # Укажите только нужные поля
 
+<<<<<<< HEAD
+=======
+
+from .models import Property, FeedBack, Image, Advertisement
+
+>>>>>>> 371cd79ccc901e03daee60a319794b058f75582e
 
 class FeedBackSerializer(serializers.ModelSerializer):
     """
@@ -96,8 +107,10 @@ class CitySerializer(serializers.ModelSerializer):
 
 
 class AdvertisementSerializer(serializers.ModelSerializer):
+    "Временный сериалязер"
     class Meta:
         model = Advertisement
+<<<<<<< HEAD
         fields = (
             'deal_choices',
             'currency_choices',
@@ -117,3 +130,6 @@ class AdDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Advertisement
         exclude = ('id',)
+=======
+        fields = '__all__'
+>>>>>>> 371cd79ccc901e03daee60a319794b058f75582e

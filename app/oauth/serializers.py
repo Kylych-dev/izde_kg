@@ -3,7 +3,7 @@ from rest_framework import status
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import (get_user_model,
                                  authenticate, )
-from .models import (Language, Region)
+from .models import (Language, Region, Feedback, CustomUser)
 
 User = get_user_model()
 
@@ -72,10 +72,13 @@ class AgentSerializer(serializers.ModelSerializer):
         regions_data = validated_data.pop('region')
         languages_data = validated_data.pop('languages')
         instance.photo = validated_data.get('photo', instance.photo)
-        instance.full_name = validated_data.get('full_name', instance.full_name)
-        instance.description = validated_data.get('description', instance.description)
+        instance.full_name = validated_data.get(
+            'full_name', instance.full_name)
+        instance.description = validated_data.get(
+            'description', instance.description)
         instance.phone = validated_data.get('phone', instance.phone)
-        instance.experience = validated_data.get('experience', instance.experience)
+        instance.experience = validated_data.get(
+            'experience', instance.experience)
         instance.is_agent = True
         instance.save()
 
@@ -118,21 +121,94 @@ class AuthTokenSerializer(serializers.Serializer):
         return attrs
 
 
-class AgentInfoSerializer(serializers.ModelSerializer):
+class FeedbackSerializer(serializers.ModelSerializer):
     class Meta:
+<<<<<<< HEAD
         model = get_user_model()
         fields = '__all__'
 
     def to_representation(self, instance):
         return super().to_representation(instance)
+=======
+        model = Feedback
+        fields = '__all__'
+
+
+class AgentListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ('full_name', 'photo', 'description')
+
+
+class AgentInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ('description',)
+
+    def get_photo(self, instance):
+        if instance.photo:
+            request = self.context.get('request')
+            if request is not None:
+                return request.build_absolute_uri(instance.photo.url)
+        return None
+
+    def to_representation(self, instance):
+        request = self.context.get('request')
+        if request and request.query_params.get('detail'):
+            return super().to_representation(instance)
+        else:
+            return {
+                'full_name': instance.full_name,
+                'photo': self.get_photo(instance),
+                'email': instance.email,
+                'phone': str(instance.phone),
+                'feedback': self.get_feedbacks_received(instance),
+            }
+
+    def get_feedbacks_received(self, instance):
+        feedbacks = instance.feedbacks_received.all()
+        serializer = FeedbackSerializer(feedbacks, many=True)
+        return serializer.data
+
+
+class AgentSerializer(serializers.ModelSerializer):
+    region = RegionSerializer(many=True, required=True)
+    languages = LanguageSerializer(many=True, required=True)
+    full_name = serializers.CharField(required=True)
+    phone = serializers.IntegerField(required=True)
+
+    class Meta:
+        model = User
+        fields = ['photo',
+                  'full_name',
+                  'description',
+                  'phone',
+                  'languages',
+                  'experience',
+                  'region',
+                  'is_agent',
+                  ]
+
+    def validated_full_name(self, value):
+        if len(value) < 2:
+            raise serializers.ValidationError(_("Name is too short"))
+        else:
+            return value
+>>>>>>> 371cd79ccc901e03daee60a319794b058f75582e
 
 
 class FeedbackAgent(serializers.ModelSerializer):
     """
     Сериалайзер для отображения отзывов об агенте
     """
+<<<<<<< HEAD
     # pass
     #
     #
     #     model = User
     #     fields = ['']
+=======
+    #    model = User
+    #    fields = ['']
+    # pass
+>>>>>>> 371cd79ccc901e03daee60a319794b058f75582e

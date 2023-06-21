@@ -9,8 +9,13 @@ from .serializers import (
     UserSerializer,
     AuthTokenSerializer,
     AgentSerializer,
+<<<<<<< HEAD
     AgentInfoSerializer
 
+=======
+    AgentInfoSerializer,
+    AgentListSerializer
+>>>>>>> 371cd79ccc901e03daee60a319794b058f75582e
 )
 from app.property.models import Advertisement
 from app.property.serializers import AdvertisementSerializer, AdDetailSerializer
@@ -44,12 +49,17 @@ class CreateTokenView(ObtainAuthToken):
         return Response({'token': token.key})
 
 
-class AgentInfoViewSet(viewsets.ModelViewSet):
+class AgentInfoViewSet(viewsets.ReadOnlyModelViewSet):
     """
     Класс для отображении информации об агенте
     """
     serializer_class = AgentInfoSerializer
-    queryset = User.objects.all()
+    queryset = User.objects.filter(is_agent=True)
+    
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return AgentListSerializer
+        return AgentInfoSerializer
     # permission_classes = [IsAgentOrAdminOrReadOnly]
 
 
