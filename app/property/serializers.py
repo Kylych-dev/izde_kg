@@ -1,11 +1,7 @@
 from rest_framework import serializers
-<<<<<<< HEAD
+
 from .models import (Property, FeedBack, Image, Address, District, City, Advertisement)
 from app.oauth.serializers import UserSerializer
-=======
-
-from .models import Property, FeedBack, Image, Address, District, City, Advertisement
->>>>>>> aa368312c06add66ca151d3064bb6c906bc038af
 
 
 class PropertyListSerializer(serializers.ModelSerializer):
@@ -13,14 +9,12 @@ class PropertyListSerializer(serializers.ModelSerializer):
     Сериализатор для отображения списка объявлений
     Ограниченный набор полей
     """
+
     class Meta:
         model = Property
-<<<<<<< HEAD
+
         fields = ('id', 'owner', 'slug', 'purpose')  # Укажите только нужные поля
-=======
         # Укажите только нужные поля
-        fields = ('id', 'owner', 'slug', 'purpose')
->>>>>>> aa368312c06add66ca151d3064bb6c906bc038af
 
 
 class FeedBackSerializer(serializers.ModelSerializer):
@@ -37,7 +31,7 @@ class FeedBackSerializer(serializers.ModelSerializer):
 
 class PropertySerializer(serializers.ModelSerializer):
     feedback = FeedBackSerializer(many=True, required=False)
-    owner = serializers.PrimaryKeyRelatedField(read_only=True, 
+    owner = serializers.PrimaryKeyRelatedField(read_only=True,
                                                default=serializers.CurrentUserDefault())
 
     class Meta:
@@ -126,10 +120,10 @@ class AdvertisementSerializer(serializers.ModelSerializer):
 class AdDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Advertisement
-        exclude = ('deal_choices',
-                   'currency_choices',
-                   'price',
-                   'additional_info')
+        fields = ('deal_choices',
+                  'currency_choices',
+                  'price',
+                  'additional_info')
 
     def to_representation(self, instance):
         context = super().to_representation(instance)

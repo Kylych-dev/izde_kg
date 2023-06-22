@@ -1,6 +1,7 @@
 from rest_framework import generics, viewsets, status
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.settings import api_settings
@@ -28,7 +29,10 @@ class AgentAPIView(generics.UpdateAPIView):
     permission_classes = (IsAuthenticated,)
 
     def get_object(self):
-        return User.objects.get(pk=self.request.user.id, is_agent=False)
+        try:
+            return User.objects.get(pk=self.request.user.id, is_agent=False)
+        except Exception as e:
+            raise ValidationError("You are already agent!")
 
 
 class CreateTokenView(ObtainAuthToken):
