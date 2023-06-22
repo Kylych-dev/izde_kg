@@ -9,14 +9,8 @@ from .serializers import (
     UserSerializer,
     AuthTokenSerializer,
     AgentSerializer,
-<<<<<<< HEAD
-    AgentInfoSerializer
-
-=======
-    AgentInfoSerializer,
-    AgentListSerializer
->>>>>>> 371cd79ccc901e03daee60a319794b058f75582e
-)
+    AgentListSerializer,
+    AgentInfoSerializer)
 from app.property.models import Advertisement
 from app.property.serializers import AdvertisementSerializer, AdDetailSerializer
 
@@ -55,7 +49,7 @@ class AgentInfoViewSet(viewsets.ReadOnlyModelViewSet):
     """
     serializer_class = AgentInfoSerializer
     queryset = User.objects.filter(is_agent=True)
-    
+
     def get_serializer_class(self):
         if self.action == 'list':
             return AgentListSerializer

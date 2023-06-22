@@ -6,11 +6,7 @@ from .views import (UserAPIView,
                     AgentAPIView,
                     AddWishlistView,
                     AdsInUserWishListView,
-<<<<<<< HEAD
-                    AdsInUserWishListDetailView)
-=======
-                    AgentInfoViewSet)
->>>>>>> 371cd79ccc901e03daee60a319794b058f75582e
+                    AdsInUserWishListDetailView, AgentInfoViewSet)
 
 router = DefaultRouter()
 # router.register(r'users', CustomUserViewSet, basename='user')
@@ -22,8 +18,7 @@ urlpatterns = [
     path('login/', CreateTokenView.as_view(), name='token'),
     path('add-wishlist/<int:pk>/', AddWishlistView.as_view(), name='add-wishlist'),
     path('wishlist/', AdsInUserWishListView.as_view(), name='user-wishlist'),
-    path('ads-details/', AdsInUserWishListDetailView.as_view(), name='ads-detail')
-
+    path('ads-details/<int:pk>/', AdsInUserWishListDetailView.as_view(), name='ads-detail')
 
 ]
-urlpatterns += router.urls
+# urlpatterns += router.urls
