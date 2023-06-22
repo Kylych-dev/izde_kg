@@ -50,7 +50,7 @@ class AgentInfoViewSet(viewsets.ReadOnlyModelViewSet):
     """
     serializer_class = AgentInfoSerializer
     queryset = User.objects.filter(is_agent=True)
-    
+
     def get_serializer_class(self):
         if self.action == 'list':
             return AgentListSerializer

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Property, FeedBack, Image, Address, District, City
+from .models import Property, FeedBack, Image, Address, District, City, Advertisement
 
 
 class PropertyListSerializer(serializers.ModelSerializer):
@@ -8,13 +8,10 @@ class PropertyListSerializer(serializers.ModelSerializer):
     Сериализатор для отображения списка объявлений
     Ограниченный набор полей
     """
-
     class Meta:
         model = Property
-        fields = ('id', 'owner', 'slug', 'purpose')  # Укажите только нужные поля
-
-
-from .models import Property, FeedBack, Image, Advertisement
+        # Укажите только нужные поля
+        fields = ('id', 'owner', 'slug', 'purpose')
 
 
 class FeedBackSerializer(serializers.ModelSerializer):
@@ -30,23 +27,20 @@ class FeedBackSerializer(serializers.ModelSerializer):
 
 
 class PropertySerializer(serializers.ModelSerializer):
-    """
-    Сериализатор для отображения всех объявлений
-    """
+    feedback = FeedBackSerializer(many=True, required=False)
+    owner = serializers.PrimaryKeyRelatedField(read_only=True, 
+                                               default=serializers.CurrentUserDefault())
 
     class Meta:
         model = Property
         fields = '__all__'
 
-    feedback = FeedBackSerializer(many=True)
-
     def to_representation(self, instance):
         context = super().to_representation(instance)
         context['images'] = ImagesSerializer(
             instance.images.all(), many=True, context=self.context).data
-        feedback_data = self.fields['feedback'].to_representation(
+        context['feedback'] = self.fields['feedback'].to_representation(
             instance.feedback.all())
-        context['feedback'] = feedback_data
         context['address'] = AddressSerializer(
             instance.address, many=False).data
         context['owner'] = instance.owner.email
