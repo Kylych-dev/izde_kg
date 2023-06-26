@@ -73,6 +73,10 @@ class Advertisement(models.Model):
     wishlist = models.ManyToManyField(CustomUser, related_name='wishlist_advertisement',
                                       default=None, blank=True)
 
+    class Meta:
+        verbose_name = 'Объявление'
+        verbose_name_plural = 'Объявления'
+
 
 class Address(models.Model):
     region = models.CharField(
@@ -87,6 +91,10 @@ class Address(models.Model):
     def __str__(self):
         return str(self.street) + str(self.apartment)
 
+    class Meta:
+        verbose_name = 'Адрес'
+        verbose_name_plural = 'Адреса'
+
 
 class City(models.Model):
     title = models.CharField(max_length=50)
@@ -94,12 +102,20 @@ class City(models.Model):
     def __str__(self):
         return str(self.title)
 
+    class Meta:
+        verbose_name = 'Город'
+        verbose_name_plural = 'Города'
+
 
 class District(models.Model):
     title = models.CharField(max_length=50)
 
     def __str__(self):
         return str(self.title)
+
+    class Meta:
+        verbose_name = 'Район'
+        verbose_name_plural = 'Районы'
 
 
 class FeedBack(models.Model):
@@ -116,3 +132,7 @@ class FeedBack(models.Model):
 
     def __str__(self):
         return f"{self.property} - {self.user} - {self.date.strftime('%Y-%m-%d %H:%M:%S')}"
+
+    class Meta:
+        verbose_name = 'Отзыв'
+        verbose_name_plural = 'Отзывы'

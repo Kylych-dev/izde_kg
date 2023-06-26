@@ -26,6 +26,10 @@ class Region(models.Model):
     def __str__(self):
         return self.title
 
+    class Meta:
+        verbose_name = "Регион"
+        verbose_name_plural = "Регионы"
+
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     photo = models.ImageField(_("photo"), blank=True, null=True)
@@ -56,9 +60,9 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         verbose_name = "Пользователь"
         verbose_name_plural = "Пользователи"
 
-    def clean(self):
-        if not self.author.is_agent:
-            raise ValidationError("Only agents can receive feedback.")
+    # def clean(self):
+    #     if not self.author.is_agent:
+    #         raise ValidationError("Only agents can receive feedback.")
 
 
 class Feedback(models.Model):
@@ -73,5 +77,9 @@ class Feedback(models.Model):
 
     def __str__(self):
         return f" {self.agent} - {self.date.strftime('%Y-%m-%d %H:%M:%S')}"
+
+    class Meta:
+        verbose_name = 'Отзыв'
+        verbose_name_plural = 'Отзывы'
 
 
