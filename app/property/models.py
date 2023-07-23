@@ -8,13 +8,13 @@ from ..service import choices, service
 
 bm = dict(blank=True, max_length=300)
 
-class Image(models.Model):
-    name = models.CharField(max_length=90)
-    file = models.ImageField(upload_to=service.upload_image_path)
-    main = models.BooleanField(default=False)
+# class Image(models.Model):
+#     name = models.CharField(max_length=90)
+#     file = models.ImageField(upload_to=service.upload_image_path)
+#     main = models.BooleanField(default=False)
 
-    def __str__(self) -> str:
-        return f'{self.name}'
+#     def __str__(self) -> str:
+#         return f'{self.name}'
 
 class Image(models.Model):
     property = models.ForeignKey(
